@@ -4,9 +4,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.content.Intent;
 
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -14,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void startCalibration(View v) {
-        Log.d("00", "Start calibration");
+        this.startActivity(new Intent(this, WiFiActivity.class));
+        this.finish();
     }
 }

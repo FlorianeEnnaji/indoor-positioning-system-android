@@ -10,12 +10,22 @@
     tools:context="com.example.florianeennaji.lo53_calibration.MainActivity">
 
     <Button
+        android:id="@+id/see_wifi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="See Wifi networks"
+        android:onClick="seeWifi"
+        android:nestedScrollingEnabled="false" />
+
+    <Button
         android:id="@+id/start_calibration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Start calibration"
+        android:text="Start Calibration"
         android:onClick="startCalibration"
-        android:nestedScrollingEnabled="false" />
+        android:nestedScrollingEnabled="false"
+        android:layout_marginTop="50dp" />
 
 </RelativeLayout>

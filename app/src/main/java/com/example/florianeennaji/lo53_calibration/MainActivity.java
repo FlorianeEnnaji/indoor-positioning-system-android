@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         this.finish();
     }
 
-    void startCalibration(View v) {
+    void sendPacket(View v) {
         System.out.println("Sending packet...");
 
         // Instantiate the RequestQueue.
@@ -50,5 +50,10 @@ public class MainActivity extends AppCompatActivity {
         });
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
+    }
+
+    void startCalibration(View v) {
+        this.startActivity(new Intent(this, CalibrationActivity.class));
+        this.finish();
     }
 }

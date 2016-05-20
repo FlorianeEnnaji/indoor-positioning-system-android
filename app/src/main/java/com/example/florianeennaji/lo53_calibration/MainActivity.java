@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://192.168.1.253:8080";
+        String url ="http://192.168.1.201:80";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -40,7 +40,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
-                        System.out.println("Response is: "+ response.substring(0,500));
+                        int length = response.length();
+                        if (length > 500)
+                            length = 500;
+                        System.out.println("Response is: "+ response.substring(0,response.length()));
                     }
                 }, new Response.ErrorListener() {
             @Override

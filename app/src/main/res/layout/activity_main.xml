@@ -36,6 +36,6 @@
         android:text="Start Calibration"
         android:onClick="startCalibration"
         android:nestedScrollingEnabled="false"
-        android:layout_marginTop="50dp" />
+        android:layout_marginTop="100dp" />
 
 </RelativeLayout>

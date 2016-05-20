@@ -22,12 +22,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    void seeWifi(View v) {
+    public void seeWifi(View v) {
         this.startActivity(new Intent(this, WiFiActivity.class));
         this.finish();
     }
 
-    void sendPacket(View v) {
+    public void sendPacket(View v) {
         System.out.println("Sending packet...");
 
         // Instantiate the RequestQueue.
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    void startCalibration(View v) {
+    public void startCalibration(View v) {
         this.startActivity(new Intent(this, CalibrationActivity.class));
         this.finish();
     }

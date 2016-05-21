@@ -2,6 +2,7 @@ package com.example.florianeennaji.lo53_calibration;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -27,7 +28,6 @@ public class CalibrationActivity extends AppCompatActivity implements OnTouchLis
     private ImageView mapView;
     private int imageWidth = 1183;
     private int imageHeight = 506;
-    private int id = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,12 +80,10 @@ public class CalibrationActivity extends AppCompatActivity implements OnTouchLis
                 Map<String, String> params = new HashMap<>();
                 params.put("x", String.valueOf(x));
                 params.put("y", String.valueOf(y));
-                params.put("id", String.valueOf(id));
 
                 return params;
             }
         };
-        id++;
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
     }

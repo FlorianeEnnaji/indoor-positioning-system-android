@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void seeWifi(View v) {
         this.startActivity(new Intent(this, WiFiActivity.class));
-        this.finish();
     }
 
     public void sendPacket(View v) {
@@ -57,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void startCalibration(View v) {
         this.startActivity(new Intent(this, CalibrationActivity.class));
-        this.finish();
+    }
+
+    public void startPositioning(View v) {
+        this.startActivity(new Intent(this, PositioningActivity.class));
     }
 }

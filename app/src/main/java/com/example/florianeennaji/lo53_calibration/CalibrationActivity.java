@@ -56,7 +56,7 @@ public class CalibrationActivity extends AppCompatActivity implements OnTouchLis
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://192.168.1.201:80/api/calibration/send-probe";
+        String url ="http://192.168.1.200:8090/api/calibration/send-probe";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -67,7 +67,7 @@ public class CalibrationActivity extends AppCompatActivity implements OnTouchLis
                         int length = response.length();
                         if (length > 500)
                             length = 500;
-                        System.out.println("Response is: "+ response.substring(0,response.length()));
+                        System.out.println("Response is: "+ response.substring(0,length));
                     }
                 }, new Response.ErrorListener() {
             @Override

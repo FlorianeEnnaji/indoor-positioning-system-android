@@ -54,7 +54,7 @@ public class PositioningActivity  extends AppCompatActivity {
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://192.168.1.200:8090/api/locate-me";
+        String url = Constants.SERVER_GET_LOCATION_URL;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -74,7 +74,7 @@ public class PositioningActivity  extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("That didn't work!");
+                System.out.println("That didn't work: " + error.getMessage());
             }
         });
         // Add the request to the RequestQueue.

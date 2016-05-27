@@ -2,11 +2,8 @@ package com.example.florianeennaji.lo53_calibration;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.content.Intent;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -31,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://192.168.1.201:80";
+        String url =Constants.SERVER_BASE_URL;
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -60,5 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void startPositioning(View v) {
         this.startActivity(new Intent(this, PositioningActivity.class));
+    }
+
+    public void startScrollableView(View v) {
+        this.startActivity(new Intent(this, ScrollableViewActivity.class));
     }
 }

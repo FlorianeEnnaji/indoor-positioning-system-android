@@ -48,4 +48,14 @@
         android:nestedScrollingEnabled="false"
         android:layout_marginTop="150dp" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start scrollable view"
+        android:id="@+id/start_calibration2"
+        android:onClick="startScrollableView"
+        android:nestedScrollingEnabled="false"
+        android:layout_below="@+id/start_positioning"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

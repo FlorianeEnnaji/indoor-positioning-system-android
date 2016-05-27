@@ -29,6 +29,11 @@
             android:name=".CalibrationActivity"
             android:screenOrientation="sensorLandscape">
         </activity>
+
+        <activity
+            android:name=".ScrollableViewActivity"
+            android:screenOrientation="sensorLandscape">
+        </activity>
         <activity
             android:name=".PositioningActivity"
             android:screenOrientation="sensorLandscape">

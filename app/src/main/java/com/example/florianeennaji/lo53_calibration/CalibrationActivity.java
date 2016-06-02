@@ -1,12 +1,18 @@
 package com.example.florianeennaji.lo53_calibration;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.ImageView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -14,77 +20,154 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.florianeennaji.lo53_calibration.view.ScrollableView;
+import com.example.florianeennaji.lo53_calibration.view.ScrollableViewComponent;
+import com.example.florianeennaji.lo53_calibration.viewComponent.ImageScrollableViewComponent;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.android.volley.Request.Method.POST;
 
 /**
- * Created by florianeennaji on 19/05/16.
+ * Activity use to do the calivb
  */
-public class CalibrationActivity extends AppCompatActivity implements OnTouchListener {
+public class CalibrationActivity extends AppCompatActivity {
 
-    private ImageView mapView;
-    private int imageWidth = 1183;
-    private int imageHeight = 506;
+    private ScrollableView scrollableView;
+    private int increment = 10;
+    final private int probeSendDelay = 200;
+    final private int nbProbe = 15;
+    private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_calibration);
+        scrollableView = (ScrollableView) findViewById(R.id.map_viewCalibration);
 
-        mapView = (ImageView) findViewById(R.id.map_view);
-        mapView.setOnTouchListener(this);
+        ImageScrollableViewComponent map = new ImageScrollableViewComponent(getResources(), R.drawable.no_padding_map);
+        scrollableView.addComponents(map);
     }
 
-    @Override
-    public boolean onTouch(View view, MotionEvent motionEvent) {
-
-        int imageX = (int) motionEvent.getX();
-        int imageY = (int) motionEvent.getY();
-
-        int realX = (imageX*imageWidth)/mapView.getWidth();
-        int realY = (imageY*imageHeight)/mapView.getHeight();
-
-        System.out.println("Real coordinates : " + realX + ", " + realY);
-        this.sendPosition(realX, realY);
-        return false;
+    public void setCenter(View v) {
+        scrollableView.setViewTo(800.0f, 300.0f);
     }
 
-    private void sendPosition(final int x, final int y) {
+    public void addUp(View v) {
+        float[] realCoords = scrollableView.getRealPos(scrollableView.getWidth() / 2, (scrollableView.getHeight() / 2) - increment);
+        scrollableView.setViewTo(realCoords[0], realCoords[1]);
+    }
+
+    public void addRigth(View v) {
+        float[] realCoords = scrollableView.getRealPos((scrollableView.getWidth() / 2) + increment, scrollableView.getHeight() / 2);
+        scrollableView.setViewTo(realCoords[0], realCoords[1]);
+    }
+
+    public void addDown(View v) {
+        float[] realCoords = scrollableView.getRealPos(scrollableView.getWidth() / 2, (scrollableView.getHeight() / 2) + increment);
+        scrollableView.setViewTo(realCoords[0], realCoords[1]);
+    }
+
+    public void addLeft(View v) {
+        // System.out.println("given coordinates : " + scrollableView.getWidth()/2 + ", " +  scrollableView.getHeight()/2);
+        final float[] realCoords = scrollableView.getRealPos((scrollableView.getWidth() / 2) - increment, scrollableView.getHeight() / 2);
+        scrollableView.setViewTo(realCoords[0], realCoords[1]);
+    }
+
+    public void getPos(View v) {
+        final float[] realCoords = scrollableView.getRealPos(scrollableView.getWidth() / 2, scrollableView.getHeight() / 2);
+        System.out.println("given coordinates : " + scrollableView.getWidth() / 2 + ", " + scrollableView.getHeight() / 2);
+        sendProbes((int) realCoords[0], (int) realCoords[1], nbProbe);
+
+        scrollableView.addComponents(new ScrollableViewComponent(){  // Adds a red dot at each point where we have sent probes
+            private Paint paint = new Paint();
+            {
+                paint.setColor(Color.RED);
+            }
+            @Override
+            public void onDraw(Canvas canvas) {
+                canvas.drawCircle(realCoords[0], realCoords[1], 5.0f,paint) ;
+            }
+        });
+    }
+
+    private void sendProbes(final int x, final int y, final int RequestNumber) {
 
         // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Constants.SERVER_SEND_CALIBRATION_URL;
+        final RequestQueue queue = Volley.newRequestQueue(this);
 
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+        // Make the request, this request will be use as many time as we want to send probes
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.SERVER_SEND_CALIBRATION_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        int length = response.length();
-                        if (length > 500)
-                            length = 500;
-                        System.out.println("Response is: "+ response.substring(0,length));
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("That didn't work!");
+                System.out.println("Request ERROR: " + error.getMessage());
             }
-        }){
+        }) {
             @Override
-            protected Map<String,String> getParams(){
+            protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("x", String.valueOf(x));
-                params.put("y", String.valueOf(y));
-
+                params.put("PosX", String.valueOf(x));
+                params.put("PosY", String.valueOf(y));
                 return params;
             }
         };
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
+
+        progress = ProgressDialog.show(this, "Please wait ...", "Sending probes 0/" + RequestNumber, true);
+
+        // communication between thread
+        final Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                int val = msg.getData().getInt("val");
+                if(val >= 0 )
+                    progress.setMessage("Sending probes " + val + "/" + RequestNumber);
+                else
+                    progress.dismiss();
+            }
+        };
+
+        // create a new thread to send request at a interval
+        Thread thread = new Thread() {
+
+            private boolean running = true;
+
+            public void run() {
+                while (this.running) {
+                    try {
+                        // Add requests to the RequestQueue.
+                        for (int i = 0; i < RequestNumber; i++) {
+                            sleep(probeSendDelay);
+                            queue.add(stringRequest);
+                            sendMsg(i+1);
+                        }
+                        this.running = false;
+                        sleep(probeSendDelay);
+                        sendMsg(-1);
+
+                    } catch (InterruptedException e) {
+                        this.running = false;
+                    }
+                }
+            }
+            // communication between thread
+            private void sendMsg(int msg) {
+                    Message msgObj = handler.obtainMessage();
+                    Bundle b = new Bundle();
+                    b.putInt("val", msg);
+                    msgObj.setData(b);
+                    handler.sendMessage(msgObj);
+            }
+        };
+        thread.start();
     }
+
+
 }
+
+

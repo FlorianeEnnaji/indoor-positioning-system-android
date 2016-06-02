@@ -1,7 +1,11 @@
 package com.example.florianeennaji.lo53_calibration;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.JsonReader;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.android.volley.Request;
@@ -10,6 +14,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.florianeennaji.lo53_calibration.view.ScrollableView;
+import com.example.florianeennaji.lo53_calibration.viewComponent.ImageScrollableViewComponent;
+import com.example.florianeennaji.lo53_calibration.viewComponent.PointScrollableViewComponent;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import static android.os.SystemClock.sleep;
 
@@ -18,10 +28,8 @@ import static android.os.SystemClock.sleep;
  */
 public class PositioningActivity  extends AppCompatActivity {
 
-    private ImageView mapView;
-    private ImageView pinView;
-    private int imageWidth = 1183;
-    private int imageHeight = 506;
+    private ScrollableView scrollableView;
+    private PointScrollableViewComponent target;
     Thread thread;
 
     @Override
@@ -29,8 +37,13 @@ public class PositioningActivity  extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_positioning);
 
-        mapView = (ImageView) findViewById(R.id.map_view);
-        pinView = (ImageView) findViewById(R.id.pin_view);
+        scrollableView = (ScrollableView) findViewById(R.id.map_viewCalibration);
+
+
+        ImageScrollableViewComponent map = new ImageScrollableViewComponent(getResources(), R.drawable.no_padding_map);
+        scrollableView.addComponents(map);
+        target = new PointScrollableViewComponent(Color.RED, 30.0f);
+        scrollableView.addComponents(target);
 
         thread = new Thread() {
 
@@ -66,15 +79,17 @@ public class PositioningActivity  extends AppCompatActivity {
 
                         if (length > 500)
                             length = 500;
-                        int[] position = parse(response.substring(1,length-1));
-                        System.out.println("Position : " + position[0] + ", " + position[1]);
-                        pinView.setX(position[0]);
-                        pinView.setY(position[1]);
+                        try {
+                            JSONObject obj = new JSONObject(response.substring(1,length-1));
+                            placeLocationPoint(Integer.parseInt(obj.getString("x")),Integer.parseInt(obj.getString("y")));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("That didn't work: " + error.getMessage());
+                System.out.println("Error in the request: " + error.getMessage());
             }
         });
         // Add the request to the RequestQueue.
@@ -82,32 +97,15 @@ public class PositioningActivity  extends AppCompatActivity {
 
     }
 
-    private int[] parse(String substring) {
-        int i = 0;
-        int x = 0;
-        int y = 0;
-
-        for (i = 4; i < substring.length() ; i++) {
-            if (substring.charAt(i) == ',') {
-                x = Integer.parseInt(substring.substring(4, i));
-                break;
-            }
-        }
-
-        for (i = substring.length()-1 ; i > 0 ; i--) {
-            if (substring.charAt(i) == ':') {
-                y = Integer.parseInt(substring.substring(i+1, substring.length()));
-                break;
-            }
-        }
-
-        return new int[]{x,y};
-    }
-
     @Override
     protected void onPause() {
         super.onPause();
         System.out.println("PAUSED");
         thread.interrupt();
+    }
+
+    protected void placeLocationPoint(int x, int y){
+        target.setPos(x, y);
+        scrollableView.setViewTo(x, y);
     }
 }

@@ -13,49 +13,42 @@
         android:id="@+id/see_wifi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:text="See Wifi networks"
         android:onClick="seeWifi"
-        android:nestedScrollingEnabled="false" />
+        android:nestedScrollingEnabled="false"
+        android:layout_alignTop="@+id/send_packet"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:id="@+id/send_packet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:text="Send Packet"
         android:onClick="sendPacket"
         android:nestedScrollingEnabled="false"
-        android:layout_marginTop="50dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:id="@+id/start_calibration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:text="Start Calibration"
         android:onClick="startCalibration"
         android:nestedScrollingEnabled="false"
-        android:layout_marginTop="100dp" />
+        android:layout_below="@+id/start_positioning"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="44dp" />
 
     <Button
         android:id="@+id/start_positioning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Start Positioning"
+        android:text="Find my position"
         android:onClick="startPositioning"
         android:nestedScrollingEnabled="false"
-        android:layout_marginTop="150dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start scrollable view"
-        android:id="@+id/start_calibration2"
-        android:onClick="startScrollableView"
-        android:nestedScrollingEnabled="false"
-        android:layout_below="@+id/start_positioning"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="79dp" />
 
 </RelativeLayout>

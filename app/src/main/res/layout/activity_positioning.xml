@@ -5,17 +5,14 @@
     android:layout_height="match_parent"
     tools:context=".PositioningActivity">
 
-    <ImageView
-        android:id="@+id/map_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/no_padding_map"/>
-
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/pin_view"
-        android:layout_gravity="center_horizontal"
-        android:src="@android:drawable/sym_def_app_icon"/>
+    <com.example.florianeennaji.lo53_calibration.view.ScrollableView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="0dp"
+        android:id="@+id/map_viewCalibration"
+        android:onClick="setCenter"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white" />
 
 </RelativeLayout>

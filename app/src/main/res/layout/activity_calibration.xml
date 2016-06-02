@@ -1,14 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1"
-    tools:context="com.example.florianeennaji.lo53_calibration.CalibrationActivity">
+    >
+
+    <com.example.florianeennaji.lo53_calibration.view.ScrollableView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="0dp"
+        android:id="@+id/map_viewCalibration"
+        android:onClick="setCenter"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Center"
+        android:id="@+id/btnCenter"
+        android:onClick="setCenter"
+        android:nestedScrollingEnabled="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
 
     <ImageView
-        android:id="@+id/map_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/no_padding_map"/>
-</LinearLayout>
+        android:id="@+id/horizontal_line"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/horizontal_line" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/vertical_line"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/vertical_line" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/BtnArrowUp"
+        android:src="@drawable/ic_expand_less_black_24dp"
+        android:background="@android:color/transparent"
+        android:foreground="@drawable/ripple"
+        android:minHeight="@dimen/action_button_min_height"
+        android:minWidth="@dimen/action_button_min_height"
+        android:layout_above="@+id/BtnArrowRight"
+        android:layout_alignStart="@+id/BtnSendProbe"
+        android:onClick="addUp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/BtnArrowDown"
+        android:src="@drawable/ic_expand_more_black_24dp"
+        android:background="@android:color/transparent"
+        android:foreground="@drawable/ripple"
+        android:minHeight="@dimen/action_button_min_height"
+        android:minWidth="@dimen/action_button_min_height"
+        android:layout_below="@+id/BtnArrowRight"
+        android:layout_alignStart="@+id/BtnSendProbe"
+        android:onClick="addDown" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/BtnArrowRight"
+        android:src="@drawable/ic_chevron_right_black_24dp"
+        android:background="@android:color/transparent"
+        android:foreground="@drawable/ripple"
+        android:minHeight="@dimen/action_button_min_height"
+        android:minWidth="@dimen/action_button_min_height"
+        android:layout_alignTop="@+id/BtnSendProbe"
+        android:layout_toEndOf="@+id/BtnSendProbe"
+        android:onClick="addRigth" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/BtnArrowLeft"
+        android:src="@drawable/ic_chevron_left_black_24dp"
+        android:background="@android:color/transparent"
+        android:foreground="@drawable/ripple"
+        android:minHeight="@dimen/action_button_min_height"
+        android:minWidth="@dimen/action_button_min_height"
+        android:layout_alignTop="@+id/BtnSendProbe"
+        android:layout_toStartOf="@+id/BtnSendProbe"
+        android:onClick="addLeft" />
+
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/BtnSendProbe"
+        android:src="@drawable/ic_gps_fixed_black_24dp"
+        android:background="@android:color/transparent"
+        android:foreground="@drawable/ripple"
+        android:minHeight="@dimen/action_button_min_height"
+        android:minWidth="@dimen/action_button_min_height"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="getPos" />
+
+
+</RelativeLayout>

@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.content.Intent;
+import android.view.Window;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -17,10 +19,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
-
-    public void seeWifi(View v) {
-        this.startActivity(new Intent(this, WiFiActivity.class));
     }
 
     public void sendPacket(View v) {
@@ -39,7 +37,9 @@ public class MainActivity extends AppCompatActivity {
                         int length = response.length();
                         if (length > 500)
                             length = 500;
-                        System.out.println("Response is: "+ response.substring(0,response.length()));
+
+                        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                        System.out.println("Response is: "+ response);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -51,15 +51,16 @@ public class MainActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void startCalibration(View v) {
-        this.startActivity(new Intent(this, CalibrationActivity.class));
+    public void seeWifi(View v) {
+        this.startActivity(new Intent(this, WiFiActivity.class));
     }
+
 
     public void startPositioning(View v) {
         this.startActivity(new Intent(this, PositioningActivity.class));
     }
 
-    public void startScrollableView(View v) {
-        this.startActivity(new Intent(this, ScrollableViewActivity.class));
+    public void startCalibration(View v) {
+        this.startActivity(new Intent(this, CalibrationActivity.class));
     }
 }

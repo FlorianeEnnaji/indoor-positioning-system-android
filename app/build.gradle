@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.example.florianeennaji.lo53_calibration"
+        applicationId "fr.utbm.info.lo53_calibration"
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 1

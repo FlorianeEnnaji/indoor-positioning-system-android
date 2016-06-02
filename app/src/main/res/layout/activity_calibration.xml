@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     >
 
-    <com.example.florianeennaji.lo53_calibration.view.ScrollableView
+    <fr.utbm.info.lo53_calibration.view.ScrollableView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginLeft="0dp"

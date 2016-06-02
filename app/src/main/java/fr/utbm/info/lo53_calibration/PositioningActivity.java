@@ -75,7 +75,7 @@ public class PositioningActivity  extends AppCompatActivity {
                         if (length > 500)
                             length = 500;
                         try {
-                            JSONObject obj = new JSONObject(response.substring(1,length-1));
+                            JSONObject obj = new JSONObject(response.substring(response.indexOf("{"),response.indexOf("}")+1));
                             placeLocationPoint(Integer.parseInt(obj.getString("x")),Integer.parseInt(obj.getString("y")));
                         } catch (JSONException e) {
                             e.printStackTrace();

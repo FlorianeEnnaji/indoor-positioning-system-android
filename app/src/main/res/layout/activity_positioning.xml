@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PositioningActivity">
+    tools:context="fr.utbm.info.lo53_calibration.PositioningActivity">
 
-    <com.example.florianeennaji.lo53_calibration.view.ScrollableView
+    <fr.utbm.info.lo53_calibration.view.ScrollableView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginLeft="0dp"

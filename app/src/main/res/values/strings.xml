@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Indoor Positioning System</string>
+    <string name="app_name_short">IPS</string>
+    <string name="main_btn_calibration">Start calibration</string>
+    <string name="main_btn_location">Get location</string>
+
+    <string name="pref_key_server_host">ServerHost</string>
+    <string name="pref_key_server_port">ServerPort</string>
+    <string name="pref_key_server_proto">ServerProto</string>
+    <string name="pref_key_calibration_nb_probe_send">CalibrationNbProbeSend</string>
+    <string name="pref_key_calibration_time_btw_probe">TimeBtwProbe</string>
 </resources>

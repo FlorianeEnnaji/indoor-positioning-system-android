@@ -62,7 +62,8 @@ public class PositioningActivity  extends AppCompatActivity {
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Constants.SERVER_GET_LOCATION_URL;
+        String url = Constants.getFullUrl(this, Constants.SERVER_GET_LOCATION_URL);
+        System.out.println("Error in the request: " + url);
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {

@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/MainActionBar"
+    tools:context="fr.utbm.info.lo53_calibration.MainActivity">
+
+
+    <item android:id="@+id/action_settings"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:foreground="@drawable/ripple_light"
+        android:title="Setting"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/action_check_connection"
+        android:foreground="@drawable/ripple_light"
+        android:title="Check connection"
+        app:showAsAction="never"/>
+
+</menu>

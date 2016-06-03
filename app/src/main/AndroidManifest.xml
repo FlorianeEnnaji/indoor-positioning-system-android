@@ -3,6 +3,7 @@
     package="fr.utbm.info.lo53_calibration">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -19,19 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WiFiActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.WIFI" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".CalibrationActivity"
             android:screenOrientation="sensorLandscape"/>
         <activity
             android:name=".PositioningActivity"
-            android:screenOrientation="sensorLandscape"/>
+            android:screenOrientation="sensorLandscape" />
+        <activity android:name=".SettingsActivity"></activity>
     </application>
 
 </manifest>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Server settings"
+        android:key="pref_key_server">
+        <ListPreference
+            android:key="@string/pref_key_server_proto"
+            android:summary="Choose the protocol used to reach the server"
+            android:title="Protocol"
+            android:dialogTitle="The protocol used to reach the server"
+            android:entries="@array/pref_proto"
+            android:entryValues="@array/pref_proto"
+            android:defaultValue="HTTP" />
+        <EditTextPreference
+            android:key="@string/pref_key_server_host"
+            android:title="Host"
+            android:summary="The ip address of the server"
+            android:defaultValue="192.168.1.1"/>
+        <EditTextPreference
+            android:key="@string/pref_key_server_port"
+            android:title="Port"
+            android:summary="The port of the server"
+            android:defaultValue="8090"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Calibration settings"
+        android:key="pref_key_calibration">
+
+        <EditTextPreference
+            android:key="@string/pref_key_calibration_nb_probe_send"
+            android:title="Send probes "
+            android:inputType="number"
+            android:summary="The number of probe send during a calibration point"
+            android:defaultValue="50"
+            />
+        <EditTextPreference
+            android:key="@string/pref_key_calibration_time_btw_probe"
+            android:title="Time between probes"
+            android:inputType="number"
+            android:summary="Number of milliseconds we wait between probes"
+            android:defaultValue="100"
+            />
+    </PreferenceCategory>
+</PreferenceScreen>

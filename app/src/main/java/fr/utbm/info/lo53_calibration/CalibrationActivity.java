@@ -1,12 +1,15 @@
 package fr.utbm.info.lo53_calibration;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -26,25 +29,30 @@ import fr.utbm.info.lo53_calibration.viewComponent.ImageScrollableViewComponent;
 
 
 /**
- * Activity use to do the calivb
+ * Activity use to do the calibration
  */
 public class CalibrationActivity extends AppCompatActivity {
 
     private ScrollableView scrollableView;
-    private int increment = 10;
-    final private int probeSendDelay = 200;
-    final private int nbProbe = 15;
+    private int increment = 20;
+    private int probeSendDelay = 100;
+    private int nbProbe = 50;
     private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_calibration);
+
         scrollableView = (ScrollableView) findViewById(R.id.map_viewCalibration);
 
         ImageScrollableViewComponent map = new ImageScrollableViewComponent(getResources(), R.drawable.no_padding_map);
         scrollableView.addComponents(map);
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this); // load preferences
+        nbProbe = Integer.parseInt(sharedPref.getString(this.getString(R.string.pref_key_calibration_nb_probe_send), "50"));
+        probeSendDelay = Integer.parseInt(sharedPref.getString(this.getString(R.string.pref_key_calibration_time_btw_probe), "100"));
+
     }
 
     public void setCenter(View v) {
@@ -95,7 +103,7 @@ public class CalibrationActivity extends AppCompatActivity {
         final RequestQueue queue = Volley.newRequestQueue(this);
 
         // Make the request, this request will be use as many time as we want to send probes
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.SERVER_SEND_CALIBRATION_URL,
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.getFullUrl(this, Constants.SERVER_SEND_CALIBRATION_URL),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

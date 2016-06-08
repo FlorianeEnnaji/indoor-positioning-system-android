@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     /** actualMode (Mode) the mode we're in*/
     protected Mode actualMode = Mode.LOCATION;
+    protected String computationModel;
 
     /**
      * Automatically called function when we create Main Activity
@@ -64,14 +65,15 @@ public class MainActivity extends AppCompatActivity {
         myToolbar.setTitle(R.string.app_name_short);
         setSupportActionBar(myToolbar);
 
+        setServerState(null);
+        setMode(Mode.LOCATION);
+
         String wifiName = isConnectedByWifi();
         setConnectionState(wifiName);
 
         if(wifiName != null){
             setMode(Mode.LOCATION);
             getServerParameter();
-        }else{
-            setServerState(null);
         }
 
     }
@@ -166,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
      * @param modelName (String) The name of the computation model OR null
      */
     public void setServerState(String modelName) {
+        computationModel = modelName;
         if (modelName != null) {
             Spannable sb = buildText("Server : ",
                     "connected",
@@ -269,8 +272,11 @@ public class MainActivity extends AppCompatActivity {
      * @param v (View)
      */
     public void startMode(View v) {
-        if(actualMode == Mode.LOCATION)
-            this.startActivity(new Intent(this, PositioningActivity.class));
+        if(actualMode == Mode.LOCATION){
+            Intent i = new Intent(this, PositioningActivity.class);
+            i.putExtra("ComputationModel",computationModel);
+            this.startActivity(i);
+        }
         if(actualMode == Mode.CALIBRATION)
             this.startActivity(new Intent(this, CalibrationActivity.class));
     }

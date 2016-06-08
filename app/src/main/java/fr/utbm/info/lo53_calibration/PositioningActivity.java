@@ -1,22 +1,23 @@
 package fr.utbm.info.lo53_calibration;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
+import android.view.WindowManager;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import fr.utbm.info.lo53_calibration.ComputationModels.ComputationModel;
+import fr.utbm.info.lo53_calibration.ComputationModels.ComputationModelInterface;
+import fr.utbm.info.lo53_calibration.ComputationModels.SingleValue;
 import fr.utbm.info.lo53_calibration.view.ScrollableView;
-import fr.utbm.info.lo53_calibration.viewComponent.ImageScrollableViewComponent;
-import fr.utbm.info.lo53_calibration.viewComponent.PointScrollableViewComponent;
+import fr.utbm.info.lo53_calibration.viewComponents.ImageScrollableViewComponent;
+import fr.utbm.info.lo53_calibration.viewComponents.PointScrollableViewComponent;
 
 /**
  * @file PositioningActivity.java
@@ -27,7 +28,7 @@ import fr.utbm.info.lo53_calibration.viewComponent.PointScrollableViewComponent;
  * Is composed of a map view and an image showing where the user is
  * Sends requests to the server to get the user's location
  */
-public class PositioningActivity  extends AppCompatActivity {
+public class PositioningActivity  extends AppCompatActivity implements ComputationModelInterface {
 
     /**scrollableView (ScrollableView)*/
     private ScrollableView scrollableView;
@@ -35,6 +36,8 @@ public class PositioningActivity  extends AppCompatActivity {
     private PointScrollableViewComponent target;
     /**thread (Thread) we're using to send location requests to the server*/
     private Thread thread;
+
+    ComputationModel model = new SingleValue(this);
 
     /**
      * Automatically called function when we create Main Activity
@@ -45,9 +48,32 @@ public class PositioningActivity  extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_positioning);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        Intent myIntent = getIntent(); // gets the previously created intent
+        String computationModel = myIntent.getStringExtra("ComputationModel");
+        Class dynamicModelClass = null;
+        try {
+            dynamicModelClass = Class.forName( "fr.utbm.info.lo53_calibration.ComputationModels." + computationModel);
+        } catch( ClassNotFoundException e ) {
+            displayMsgBox("Computation model error !", buildText( "The computation model used by the server (",
+                    computationModel,
+                    new StyleSpan(android.graphics.Typeface.BOLD),
+                    ") is not supported by this application\n\nAs fallback it will use the ",
+                    "SingleValue",
+                    new StyleSpan(android.graphics.Typeface.BOLD),
+                    " model"));
+        }
+
+        try {
+            if(dynamicModelClass != null)
+                model = (ComputationModel) dynamicModelClass.getDeclaredConstructor(ComputationModelInterface.class).newInstance(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         scrollableView = (ScrollableView) findViewById(R.id.map_viewCalibration);
-
 
         ImageScrollableViewComponent map = new ImageScrollableViewComponent(getResources(), R.drawable.no_padding_map);
         scrollableView.addComponents(map);
@@ -65,54 +91,15 @@ public class PositioningActivity  extends AppCompatActivity {
             public void run() {
                 while(this.running) {
                     try {
-                        sleep(1000);
+                        sleep(model.getWaitingTime());
                     } catch (InterruptedException e) {
                         this.running = false;
                     }
-                    locateMe();
+                    model.locateMe();
                 }
             }
         };
         thread.start();
-    }
-
-    /**
-     * @brief Function that sends a get request to the server
-     * asks the server for the device's location and parses the answer
-     */
-    private void locateMe() {
-
-        // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Constants.getFullUrl(this, Constants.SERVER_GET_LOCATION_URL);
-        System.out.println("Error in the request: " + url);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        int length = response.length();
-                        // Display the first 500 characters of the response string.
-
-                        if (length > 500)
-                            length = 500;
-                        try {
-                            JSONObject obj = new JSONObject(response.substring(response.indexOf("{"),response.indexOf("}")+1));
-                            placeLocationPoint(Integer.parseInt(obj.getString("x")),Integer.parseInt(obj.getString("y")));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("Error in the request: " + error.getMessage());
-            }
-        });
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
-
     }
 
     /**
@@ -122,17 +109,57 @@ public class PositioningActivity  extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         System.out.println("PAUSED");
         thread.interrupt();
     }
 
+
+    public void displayMsgBox(String title, Spannable msg){
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(msg)
+                .setNeutralButton("Ok",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(R.drawable.ic_report_problem_red_24dp)
+                .show();
+    }
+
+
     /**
-     * @brief Places the target point on the map and center the map on this point
-     * @param x (int) the x position on the map
-     * @param y (int) the y position on the map
+     * Helper method who build automatically a Spannable form parameters
+     * @param params (Object )
+     * @return The Spannable
      */
-    protected void placeLocationPoint(int x, int y){
+    protected Spannable buildText(Object ...params){
+        String finalStr = "";
+        for(Object p : params){
+            if(p instanceof String)
+                finalStr += p;
+        }
+        Spannable sb = new SpannableString(finalStr);
+        String prevStr = "";
+        for(Object p : params){
+            if(p instanceof String)
+                prevStr = (String) p;
+            else {
+                sb.setSpan(p, finalStr.indexOf(prevStr), finalStr.indexOf(prevStr)+ prevStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE); // add Style
+            }
+        }
+        return sb;
+    }
+
+    @Override
+    public void setLocation(int x, int y) {
         target.setPos(x, y);
         scrollableView.setViewTo(x, y);
+    }
+
+    @Override
+    public Context provideContext() {
+        return this;
     }
 }

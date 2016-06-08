@@ -36,7 +36,7 @@
             />
         <EditTextPreference
             android:key="@string/pref_key_calibration_time_btw_probe"
-            android:title="Time between probes"
+            android:title="Time between probes "
             android:inputType="number"
             android:summary="Number of milliseconds we wait between probes"
             android:defaultValue="100"

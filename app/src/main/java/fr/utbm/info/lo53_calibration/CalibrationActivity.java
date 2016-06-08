@@ -1,7 +1,6 @@
 package fr.utbm.info.lo53_calibration;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -25,7 +24,7 @@ import java.util.Map;
 
 import fr.utbm.info.lo53_calibration.view.ScrollableView;
 import fr.utbm.info.lo53_calibration.view.ScrollableViewComponent;
-import fr.utbm.info.lo53_calibration.viewComponent.ImageScrollableViewComponent;
+import fr.utbm.info.lo53_calibration.viewComponents.ImageScrollableViewComponent;
 
 
 /**

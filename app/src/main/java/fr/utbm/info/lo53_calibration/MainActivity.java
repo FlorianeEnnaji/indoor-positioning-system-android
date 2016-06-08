@@ -1,6 +1,5 @@
 package fr.utbm.info.lo53_calibration;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -35,13 +34,26 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * @file MainActivity.java
+ * @brief Main Activity that manages the first view
+ * @date April 8, 2016
+ * @see android.support.v7.app.AppCompatActivity
+ */
 public class MainActivity extends AppCompatActivity {
+    /**Mode (enum) registering all possible modes : calibration and location*/
     protected enum Mode{
         CALIBRATION, LOCATION
     }
 
+    /** actualMode (Mode) the mode we're in*/
     protected Mode actualMode = Mode.LOCATION;
 
+    /**
+     * Automatically called function when we create Main Activity
+     * @brief Initializes the view and Wifi
+     * @param savedInstanceState (Bundle) the instance of the activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +76,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Automatically called function when we create our options menu
+     * @brief creates a menu in the action bar
+     * @param menu (Menu) the menu which is created
+     * @return a boolean to see if initialization has been made successfully
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -71,6 +89,12 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * Automatically called function when a menu item is selected
+     * @brief starts the settings activity or checks connection
+     * @param item (MenuItem) the item which is selected
+     * @return a boolean to see if action has been made successfully
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -97,8 +121,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Checks if a wifi connection is enabled
-     * @return (String) The name of the connection OR null
+     * @brief Checks if a Wi-Fi connection is enabled
+     * @return the name of the connection OR null (String)
      */
     public String isConnectedByWifi(){
         ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -116,8 +140,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Updates the view about the connectivity
-     * @param wifiName (String) The name of the wifi connection OR null
+     * @brief Updates the view about the connectivity
+     * @param wifiName (String) the name of the Wi-Fi connection OR null
      */
     public void setConnectionState(String wifiName){
         if(wifiName != null){
@@ -138,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Updates the view about the server state
+     * @brief Updates the view about the server state
      * @param modelName (String) The name of the computation model OR null
      */
     public void setServerState(String modelName) {
@@ -166,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Updates the view about the mode (Calibration or location)
+     * @brief Updates the view about the mode (Calibration or location)
      * @param mode (Mode) The selected mode
      */
     public void setMode(Mode mode) {
@@ -187,8 +211,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Do a request to ask the server configuration
-     * According to the respond this method will set de mode and update the view
+     * @brief Perform a request to ask the server configuration
+     * According to the respond this method will set the mode and update the view
      */
     public void getServerParameter(){
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -219,8 +243,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Sends a ping request on the server (OnClick method)
-     * @param v
+     * @brief Sends a ping request on the server (OnClick method)
+     * @param v (View)
      */
     public void sendPing(View v) {
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -241,8 +265,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Launch other activity (OnClick method)
-     * @param v
+     * @brief Launch other activity (OnClick method)
+     * @param v (View)
      */
     public void startMode(View v) {
         if(actualMode == Mode.LOCATION)
@@ -253,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * Helper method who build automatically a Spannable form parameters
+     * @brief Helper method which build automatically a Spannable form parameters
      * @param params (Object )
      * @return The Spannable
      */

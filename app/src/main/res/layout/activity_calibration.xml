@@ -80,7 +80,7 @@
         android:minWidth="@dimen/action_button_min_height"
         android:layout_alignTop="@+id/BtnSendProbe"
         android:layout_toEndOf="@+id/BtnSendProbe"
-        android:onClick="addRigth" />
+        android:onClick="addRight" />
 
     <ImageButton
         android:layout_width="wrap_content"

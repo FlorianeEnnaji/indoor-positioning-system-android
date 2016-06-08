@@ -1,4 +1,4 @@
-package fr.utbm.info.lo53_calibration.viewComponent;
+package fr.utbm.info.lo53_calibration.viewComponents;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

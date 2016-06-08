@@ -1,4 +1,4 @@
-package fr.utbm.info.lo53_calibration.viewComponent;
+package fr.utbm.info.lo53_calibration.viewComponents;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;

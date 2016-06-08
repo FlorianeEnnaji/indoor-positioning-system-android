@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.view.WindowManager;
 
 import fr.utbm.info.lo53_calibration.ComputationModels.ComputationModel;
 import fr.utbm.info.lo53_calibration.ComputationModels.ComputationModelInterface;
@@ -32,6 +33,7 @@ public class PositioningActivity  extends AppCompatActivity implements Computati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_positioning);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         Intent myIntent = getIntent(); // gets the previously created intent
         String computationModel = myIntent.getStringExtra("ComputationModel");
@@ -84,6 +86,7 @@ public class PositioningActivity  extends AppCompatActivity implements Computati
     @Override
     protected void onPause() {
         super.onPause();
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         System.out.println("PAUSED");
         thread.interrupt();
     }

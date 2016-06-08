@@ -10,7 +10,10 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 /**
- * This class is a scrollable and zoomable view where components can be added dynamically
+ * @file ScrollableView.java
+ * @brief This class is a scrollable and zoomable view where components can be added dynamically
+ * @date June 3, 2016
+ * @see android.widget.ImageView
  */
 public class ScrollableView extends ImageView {
 
@@ -28,6 +31,12 @@ public class ScrollableView extends ImageView {
     private float minScale = 0.65f;
     private float maxScale = 3.5f;
 
+
+    /**
+     * @brief constructor with context and attribute set
+     * @param context (Context)
+     * @param attrs (AttributeSet)
+     */
     public ScrollableView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
@@ -39,7 +48,7 @@ public class ScrollableView extends ImageView {
     }
 
     /**
-     * Sets the view to a given position
+     * @brief Sets the view to a given position
      * @param posX (float) the x coordinate
      * @param posY (float) the y coordinate
      * @param scale (float) the new scale, if the given scale is below zero it will not change the current scale
@@ -53,7 +62,7 @@ public class ScrollableView extends ImageView {
         invalidate();
     }
     /**
-     * Sets the view to a given position without touching the scale
+     * @brief Sets the view to a given position without touching the scale
      * @param posX (float) the x coordinate
      * @param posY (float) the y coordinate
      */
@@ -62,7 +71,7 @@ public class ScrollableView extends ImageView {
     }
 
     /**
-     * Adds a component to the view
+     * @brief Adds a component to the view
      * @param component (ScrollableViewComponent) the component we want to add
      */
     public void addComponents(ScrollableViewComponent component){
@@ -71,7 +80,7 @@ public class ScrollableView extends ImageView {
     }
 
     /**
-     * Gets the real position on the view with a given position on the screen
+     * @brief Gets the real position on the view with a given position on the screen
      * @param posX
      * @param posY
      * @return (float[2])
@@ -85,6 +94,11 @@ public class ScrollableView extends ImageView {
 
 
 
+    /**
+     * Automatically called function
+     * @brief Apply offset and scale to the canva and call onDraw for all components
+     * @param canvas (Canvas)
+     */
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -102,6 +116,12 @@ public class ScrollableView extends ImageView {
     }
 
 
+
+    /**
+     * Function called when there's a movement on the view
+     * @brief moves the view regarding the motion of the user
+     * @param ev (MotionEvent) the motion of the user
+     */
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         // Let the ScaleGestureDetector inspect all events.
@@ -170,6 +190,11 @@ public class ScrollableView extends ImageView {
         return true;
     }
 
+
+    /**
+     * @brief scales the view
+     * @see android.view.ScaleGestureDetector.OnScaleGestureListener
+     */
     private class ScaleListener
             extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override

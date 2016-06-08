@@ -20,15 +20,30 @@ import fr.utbm.info.lo53_calibration.viewComponents.ImageScrollableViewComponent
 import fr.utbm.info.lo53_calibration.viewComponents.PointScrollableViewComponent;
 
 /**
- * Activity used to locate the user
+ * @file PositioningActivity.java
+ * @brief Positioning Activity that manages the Positioning View where the user can see his location
+ * @date May 25, 2016
+ * @see android.support.v7.app.AppCompatActivity
+ *
+ * Is composed of a map view and an image showing where the user is
+ * Sends requests to the server to get the user's location
  */
 public class PositioningActivity  extends AppCompatActivity implements ComputationModelInterface {
 
+    /**scrollableView (ScrollableView)*/
     private ScrollableView scrollableView;
+    /**target (PointScrollableViewComponent)*/
     private PointScrollableViewComponent target;
-    Thread thread;
+    /**thread (Thread) we're using to send location requests to the server*/
+    private Thread thread;
+
     ComputationModel model = new SingleValue(this);
 
+    /**
+     * Automatically called function when we create Main Activity
+     * @brief Initializes the view, adds target and launches the thread
+     * @param savedInstanceState (Bundle) the instance of the activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +84,10 @@ public class PositioningActivity  extends AppCompatActivity implements Computati
 
             private boolean running = true;
 
+            /**
+             * Automatically called function when we the thread is running
+             * @brief While we don't stop the thread, we wait and call locateMe
+             */
             public void run() {
                 while(this.running) {
                     try {
@@ -83,6 +102,10 @@ public class PositioningActivity  extends AppCompatActivity implements Computati
         thread.start();
     }
 
+    /**
+     * Automatically called function when the activity enters in pause mode
+     * @brief Stops the requests to the API
+     */
     @Override
     protected void onPause() {
         super.onPause();

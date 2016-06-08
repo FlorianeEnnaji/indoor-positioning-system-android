@@ -28,16 +28,32 @@ import fr.utbm.info.lo53_calibration.viewComponents.ImageScrollableViewComponent
 
 
 /**
- * Activity use to do the calibration
+ * @file CalibrationActivity.java
+ * @brief Calibration Activity that manages the Calibration View where the tester can tap his location
+ * @date May 25, 2016
+ * @see android.support.v7.app.AppCompatActivity
+ *
+ * Is composed of a map view and a cursor meant to be used by the tester to tell the server where he is
+ * Sends requests to the server to give the tester's location
  */
 public class CalibrationActivity extends AppCompatActivity {
 
+    /**scrollableView (ScrollableView) our map view*/
     private ScrollableView scrollableView;
+    /**increment (int)*/
     private int increment = 20;
+    /**probeSendDelay (int)*/
     private int probeSendDelay = 100;
+    /**nbProbe (int)*/
     private int nbProbe = 50;
+    /**progress (ProgressDialog)*/
     private ProgressDialog progress;
 
+    /**
+     * Automatically called function when we create Calibration Activity
+     * @brief Initializes variables, the view, adds the cursor
+     * @param savedInstanceState (Bundle) the instance of the activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,31 +70,56 @@ public class CalibrationActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * @brief Centers a view
+     * @param v (View) the view we want to get centered
+     */
     public void setCenter(View v) {
         scrollableView.setViewTo(800.0f, 300.0f);
     }
 
+    /**
+     * @brief Moves a view up
+     * @param v (View) the view we want to get moved
+     */
     public void addUp(View v) {
         float[] realCoords = scrollableView.getRealPos(scrollableView.getWidth() / 2, (scrollableView.getHeight() / 2) - increment);
         scrollableView.setViewTo(realCoords[0], realCoords[1]);
     }
 
-    public void addRigth(View v) {
+    /**
+     * @brief Moves a view to the right
+     * @param v (View) the view we want to get moved
+     */
+    public void addRight(View v) {
         float[] realCoords = scrollableView.getRealPos((scrollableView.getWidth() / 2) + increment, scrollableView.getHeight() / 2);
         scrollableView.setViewTo(realCoords[0], realCoords[1]);
     }
 
+    /**
+     * @brief Moves a view down
+     * @param v (View) the view we want to get moved
+     */
     public void addDown(View v) {
         float[] realCoords = scrollableView.getRealPos(scrollableView.getWidth() / 2, (scrollableView.getHeight() / 2) + increment);
         scrollableView.setViewTo(realCoords[0], realCoords[1]);
     }
 
+    /**
+     * @brief Moves a view to the left
+     * @param v (View) the view we want to get moved
+     */
     public void addLeft(View v) {
         // System.out.println("given coordinates : " + scrollableView.getWidth()/2 + ", " +  scrollableView.getHeight()/2);
         final float[] realCoords = scrollableView.getRealPos((scrollableView.getWidth() / 2) - increment, scrollableView.getHeight() / 2);
         scrollableView.setViewTo(realCoords[0], realCoords[1]);
     }
 
+    /**
+     * Called when the tester taps on the button to send his position
+     * @brief get real position of the tester and call the function to send it
+     * @param v (View) the view we want to get centered
+     */
     public void getPos(View v) {
         final float[] realCoords = scrollableView.getRealPos(scrollableView.getWidth() / 2, scrollableView.getHeight() / 2);
         System.out.println("given coordinates : " + scrollableView.getWidth() / 2 + ", " + scrollableView.getHeight() / 2);
@@ -96,6 +137,12 @@ public class CalibrationActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * @brief sends the position a certain nb of time to the server
+     * @param x (int) the x position of the tester
+     * @param y (int) the y position of the tester
+     * @param RequestNumber (int) the number of requests we have to send
+     */
     private void sendProbes(final int x, final int y, final int RequestNumber) {
 
         // Instantiate the RequestQueue.

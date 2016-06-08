@@ -114,7 +114,11 @@ public class PositioningActivity  extends AppCompatActivity implements Computati
         thread.interrupt();
     }
 
-
+    /**
+     * @brief Displays an alert message
+     * @param title (String) the title of the alert
+     * @param msg (Spannable) the content of the alert
+     */
     public void displayMsgBox(String title, Spannable msg){
         new AlertDialog.Builder(this)
                 .setTitle(title)
@@ -152,12 +156,20 @@ public class PositioningActivity  extends AppCompatActivity implements Computati
         return sb;
     }
 
+    /**
+     * @brief Sets the point's position on the map
+     * @param x (int) the x position
+     * @param y (int) the y position
+     */
     @Override
     public void setLocation(int x, int y) {
         target.setPos(x, y);
         scrollableView.setViewTo(x, y);
     }
 
+    /**
+     * @brief Provides context
+     */
     @Override
     public Context provideContext() {
         return this;
